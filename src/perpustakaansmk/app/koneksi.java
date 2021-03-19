@@ -1,0 +1,36 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package perpustakaansmk.app;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import javax.swing.JOptionPane;
+
+/**
+ *
+ * @author Ahmad
+ */
+public class koneksi {
+    Connection conn;
+
+    public static Connection ConnectDb(){
+        try {
+//            String url ="jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12394481";
+//            String user="sql12394481";
+//            String pass="t5UfWEYFKN";
+            String url ="jdbc:mysql://sql.smkkesletris.sch.id/u5394077_koperasi";
+            String user="u5394077_koperasi";
+            String pass="Koperasiletris123";
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn =DriverManager.getConnection(url,user,pass);
+            return conn;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+            return null;
+        }
+    }
+    
+}
