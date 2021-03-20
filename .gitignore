@@ -25,3 +25,7 @@ hs_err_pid*
 /PerpustakaanSMK-APP/nbproject/private/
 /build/
 /dist/
+!/src/lib/PlaceHolder.jar
+!/src/lib/syntheticaDark.jar
+!/src/lib/flatlaf-1.0.jar
+!/src/lib/flatlaf-intellij-themes-1.0.jar
