@@ -1,0 +1,28 @@
+Dashboard
+Peminjaman Buku
+Pengembalian
+Data Buku
+- Daftar Buku
+- Buku Hilang
+- Buku Rusak
+Data EBook
+Data Anggota
+Buku Tamu
+
+Laporan
+
+Cetak
+
+Setting
+
+- Tambah Buku
+ID Buku V
+Judul Buku V
+Pengarang V
+Penerbit v
+Tahun Terbit v
+Kode ISBN v
+Jumlah v
+Lokasi Rak
+Foto Cover v
+Ringkasan v

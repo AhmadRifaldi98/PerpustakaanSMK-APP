@@ -18,12 +18,12 @@ public class koneksi {
 
     public static Connection ConnectDb(){
         try {
-//            String url ="jdbc:mysql://sql12.freemysqlhosting.net:3306/sql12394481";
-//            String user="sql12394481";
-//            String pass="t5UfWEYFKN";
-            String url ="jdbc:mysql://sql.smkkesletris.sch.id/u5394077_koperasi";
-            String user="u5394077_koperasi";
-            String pass="Koperasiletris123";
+            String url ="jdbc:mysql://localhost:3306/perpustakaan";
+            String user="root";
+            String pass="root";
+//            String url ="jdbc:mysql://sql.smkkesletris.sch.id/u5394077_koperasi";
+//            String user="u5394077_koperasi";
+//            String pass="Koperasiletris123";
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn =DriverManager.getConnection(url,user,pass);
             return conn;
