@@ -6,6 +6,7 @@
 package perpustakaansmk.app;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 /**
@@ -19,6 +20,8 @@ public class tambah_buku extends javax.swing.JFrame {
      */
     public tambah_buku() {
         initComponents();
+        setExtendedState(JFrame.MAXIMIZED_HORIZ);
+        setResizable(false);
     }
 
     /**

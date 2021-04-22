@@ -369,7 +369,7 @@ public class Dashboard extends javax.swing.JFrame {
 
         lbl_bukutamu.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         lbl_bukutamu.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_bukutamu.setText("Buku Tamu");
+        lbl_bukutamu.setText("Buku Pengunjung");
 
         lbl_dashboard7.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         lbl_dashboard7.setForeground(new java.awt.Color(255, 255, 255));
@@ -513,6 +513,7 @@ public class Dashboard extends javax.swing.JFrame {
         btn_dashboard.setBackground(new Color(240, 240, 240));
         test.setText("Dashboard > ");
         new CambiaPanel(pnl_menu, new pnl_dashboard());
+//        transaksi_buku.setFocusable(true);
     }//GEN-LAST:event_btn_dashboardMousePressed
 
     private void btn_dashboardMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_dashboardMouseReleased
