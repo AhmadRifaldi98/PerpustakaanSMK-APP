@@ -51,15 +51,8 @@ public class p_Login extends javax.swing.JFrame {
                 switch (hak) {
                     case "2":
                         new loading().setVisible(true);
-                        new java.util.Timer().schedule(
-                        new java.util.TimerTask() {
-                        @Override
-                                public void run() {
-                                    new Dashboard().setVisible(true);
-                                }
-                        },
-                        3000
-                        );
+//                        loading
+//                        new Dashboard().setVisible(true);
                         dispose();
                         break;
                     case "3":

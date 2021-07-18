@@ -30,6 +30,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_HORIZ);
         setResizable(false);
+        getid();
     }
     
     String s_id,s_ni,s_status,s_nama,s_alamat,s_no_telp,s_email,s_username,s_password,s_hakakses,id_primary,combain;
@@ -61,7 +62,7 @@ public class tambah_anggota extends javax.swing.JFrame {
     
     public void getid(){
         conn = koneksi.ConnectDb();
-        String sql = "SELECT COUNT(id) FROM `tb_anggota`";
+        String sql = "SELECT MAX(id) FROM `tb_anggota`";
         try {
             stm=conn.createStatement();
             rs=stm.executeQuery(sql);
@@ -167,7 +168,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         status = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        label = new javax.swing.JLabel();
         id = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -205,9 +206,9 @@ public class tambah_anggota extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(30, 108, 199));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Tambah Anggota");
+        label.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        label.setForeground(new java.awt.Color(255, 255, 255));
+        label.setText("Tambah Anggota");
 
         id.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
@@ -221,7 +222,7 @@ public class tambah_anggota extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(label)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -235,7 +236,7 @@ public class tambah_anggota extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(label))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -388,7 +389,15 @@ public class tambah_anggota extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        add();
+        if (label.getText().equals("TAMBAH ANGGOTA")) {
+            add();
+        } else if (label.getText().equals("TAMBAH ANGGOTA")) {
+            update();
+        } else {
+            JOptionPane.showMessageDialog(null,"Masalah di if cek label","ERROR",JOptionPane.ERROR_MESSAGE);
+        }
+ 
+        
     }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
@@ -440,7 +449,6 @@ public class tambah_anggota extends javax.swing.JFrame {
     private javax.swing.JTextField id;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
@@ -453,6 +461,7 @@ public class tambah_anggota extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel label;
     private javax.swing.JTextField nama;
     private javax.swing.JTextField nomor_induk;
     private javax.swing.JTextField password;
