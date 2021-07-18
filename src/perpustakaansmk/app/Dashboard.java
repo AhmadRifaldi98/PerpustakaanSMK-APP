@@ -35,6 +35,17 @@ public class Dashboard extends javax.swing.JFrame {
         setVisible(true);
         conn = koneksi.ConnectDb();
         new CambiaPanel(pnl_menu, new pnl_dashboard());
+        cek_statuslogin();
+    }
+    
+    String Session_nama = login_session.getnama();
+    String Session_nik = login_session.getnik();
+    String Session_status = login_session.getstatus();
+    
+    public void cek_statuslogin(){
+        JOptionPane.showMessageDialog(null, Session_nama);
+        JOptionPane.showMessageDialog(null, Session_nik);
+        JOptionPane.showMessageDialog(null, Session_status);
     }
     
         public void change_colorbtn(){
@@ -91,9 +102,12 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_bukutamu2 = new javax.swing.JLabel();
         lbl_bukutamu3 = new javax.swing.JLabel();
         lbl_bukutamu4 = new javax.swing.JLabel();
+        lbl_bukutamu5 = new javax.swing.JLabel();
+        lbl_dashboard8 = new javax.swing.JLabel();
         pnl_menu = new javax.swing.JPanel();
         pnl_menu1 = new javax.swing.JPanel();
         test = new javax.swing.JLabel();
+        time = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Aplikasi Perpustakaan V 1.1.1");
@@ -414,6 +428,16 @@ public class Dashboard extends javax.swing.JFrame {
         lbl_bukutamu4.setText("LAPORAN");
         side_menu.add(lbl_bukutamu4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 360, -1, -1));
 
+        lbl_bukutamu5.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        lbl_bukutamu5.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_bukutamu5.setText("Cetak Laporan");
+        side_menu.add(lbl_bukutamu5, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 390, 158, 40));
+
+        lbl_dashboard8.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
+        lbl_dashboard8.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_dashboard8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/visitor.png"))); // NOI18N
+        side_menu.add(lbl_dashboard8, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 400, -1, -1));
+
         pnl_menu.setBackground(new java.awt.Color(255, 255, 255));
         pnl_menu.setMaximumSize(new java.awt.Dimension(910, 620));
         pnl_menu.setMinimumSize(new java.awt.Dimension(910, 620));
@@ -429,6 +453,12 @@ public class Dashboard extends javax.swing.JFrame {
         test.setForeground(new java.awt.Color(255, 255, 255));
         test.setText("Dashboard >");
         pnl_menu1.add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 4, 160, 40));
+
+        time.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
+        time.setForeground(new java.awt.Color(255, 255, 255));
+        time.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        time.setText("07:30:00");
+        pnl_menu1.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 70, 30));
 
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
@@ -730,6 +760,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_bukutamu2;
     private javax.swing.JLabel lbl_bukutamu3;
     private javax.swing.JLabel lbl_bukutamu4;
+    private javax.swing.JLabel lbl_bukutamu5;
     private javax.swing.JLabel lbl_dashboard;
     private javax.swing.JLabel lbl_dashboard1;
     private javax.swing.JLabel lbl_dashboard2;
@@ -738,6 +769,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_dashboard5;
     private javax.swing.JLabel lbl_dashboard6;
     private javax.swing.JLabel lbl_dashboard7;
+    private javax.swing.JLabel lbl_dashboard8;
     private javax.swing.JLabel lbl_databuku;
     private javax.swing.JLabel lbl_ebook;
     private javax.swing.JLabel lbl_peminjaman;
@@ -746,5 +778,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_menu1;
     private javax.swing.JPanel side_menu;
     private javax.swing.JLabel test;
+    private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

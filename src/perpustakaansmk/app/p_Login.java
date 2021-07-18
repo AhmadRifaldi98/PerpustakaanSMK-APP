@@ -6,6 +6,7 @@
 package perpustakaansmk.app;
 
 import com.formdev.flatlaf.FlatIntelliJLaf;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,11 +37,17 @@ public class p_Login extends javax.swing.JFrame {
     private Statement stm;
     private void login(){
         try {
-            String sql="SELECT * FROM `tb_user` where username='"+username.getText()+"'and password='" +password.getText()+"'";
+            String sql="SELECT * FROM `tb_anggota` where username='"+username.getText()+"'and password='" +password.getText()+"'";
             stm = conn.createStatement();
             ResultSet HUser = stm.executeQuery(sql);
             if (HUser.next()){
                 String hak = HUser.getString("hak_akses");
+                String nama = HUser.getString("nama");
+                String nik = HUser.getString("nomor_induk");
+                String status = HUser.getString("status");
+                login_session.setnama(nama);
+                login_session.setnik(nik);
+                login_session.setstatus(status);
                 switch (hak) {
                     case "2":
                         new loading().setVisible(true);
@@ -70,7 +77,16 @@ public class p_Login extends javax.swing.JFrame {
                 error.setText("*Username atau Password tidak boleh kosong");
             } else {
                 error.setText("*Username atau Password yang dimasukan salah");
-            }     
+            }   
+            new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                @Override
+                    public void run() {
+                        error.setText("");
+                    }
+                },
+                3000
+                );
             
             
         } catch (Exception e) {
@@ -271,6 +287,11 @@ public class p_Login extends javax.swing.JFrame {
                 passwordFocusLost(evt);
             }
         });
+        password.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                passwordKeyReleased(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -407,6 +428,13 @@ public class p_Login extends javax.swing.JFrame {
 
         }
     }//GEN-LAST:event_usernameFocusGained
+
+    private void passwordKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_passwordKeyReleased
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            login();
+        }
+    }//GEN-LAST:event_passwordKeyReleased
 
     /**
      * @param args the command line arguments
