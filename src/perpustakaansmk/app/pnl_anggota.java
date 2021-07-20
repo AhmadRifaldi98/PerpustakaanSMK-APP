@@ -5,17 +5,61 @@
  */
 package perpustakaansmk.app;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+
 /**
  *
  * @author Ahmad
  */
 public class pnl_anggota extends javax.swing.JPanel {
-
+    Connection conn;
+    ResultSet rs;
+    PreparedStatement pst;
+    private DefaultTableModel tabmode;
     /**
      * Creates new form pnl_dashboard
      */
     public pnl_anggota() {
         initComponents();
+        get_tbanggota();
+    }
+    
+    public void get_tbanggota(){
+        Object[] Baris = {"No","Kode Anggota","No. Induk","Nama","Alamat","Telp","Email","Username","Password","Status","Hak Akses","Terdaftar"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_anggota.setModel(tabmode);
+        String sql = "select * from `tb_anggota` order by `kode_anggota`";
+        
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("id");
+                String b = hasil.getString("kode_anggota");
+                String c = hasil.getString("nomor_induk");
+                String d = hasil.getString("nama");
+                String e = hasil.getString("alamat");
+                String f = hasil.getString("no_telpn");
+                String g = hasil.getString("email");
+                String h = hasil.getString("username");
+                String i = hasil.getString("password");
+                String j = hasil.getString("status");
+                String k = hasil.getString("hak_akses");
+                String l = hasil.getString("tanggal_pendaftaran");
+                String[] data ={a,b,c,d,e,f,g,h,i,j,k,l};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -45,12 +89,14 @@ public class pnl_anggota extends javax.swing.JPanel {
         lbl_dashboard4 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tb_anggota = new javax.swing.JTable();
         jTextField1 = new javax.swing.JTextField();
         tambah = new javax.swing.JButton();
         hapus = new javax.swing.JButton();
         ubah = new javax.swing.JButton();
         jLabel8 = new javax.swing.JLabel();
+        ubah1 = new javax.swing.JButton();
+        label_informasi = new javax.swing.JLabel();
 
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
@@ -133,7 +179,7 @@ public class pnl_anggota extends javax.swing.JPanel {
         jLabel11.setText("100");
         jPanel13.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_anggota.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -141,7 +187,7 @@ public class pnl_anggota extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tb_anggota);
 
         jTextField1.setText("Cari");
 
@@ -157,6 +203,11 @@ public class pnl_anggota extends javax.swing.JPanel {
         hapus.setBackground(new java.awt.Color(230, 57, 70));
         hapus.setForeground(new java.awt.Color(255, 255, 255));
         hapus.setText("Hapus");
+        hapus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                hapusActionPerformed(evt);
+            }
+        });
 
         ubah.setBackground(new java.awt.Color(252, 163, 17));
         ubah.setForeground(new java.awt.Color(255, 255, 255));
@@ -169,6 +220,15 @@ public class pnl_anggota extends javax.swing.JPanel {
 
         jLabel8.setFont(new java.awt.Font("Roboto", 0, 18)); // NOI18N
         jLabel8.setText("Anggota Perpustakaan");
+
+        ubah1.setBackground(new java.awt.Color(184, 242, 230));
+        ubah1.setForeground(new java.awt.Color(255, 255, 255));
+        ubah1.setText("Refresh");
+        ubah1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ubah1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -195,10 +255,15 @@ public class pnl_anggota extends javax.swing.JPanel {
                                 .addComponent(hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(ubah, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(jLabel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(232, 232, 232)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(140, 140, 140)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(ubah1, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(label_informasi, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -212,13 +277,16 @@ public class pnl_anggota extends javax.swing.JPanel {
                     .addComponent(jPanel11, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel8)
-                .addGap(11, 11, 11)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel8)
+                    .addComponent(label_informasi, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ubah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(hapus, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(tambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(tambah, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(ubah1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(61, 61, 61))
@@ -234,8 +302,93 @@ public class pnl_anggota extends javax.swing.JPanel {
     }//GEN-LAST:event_tambahActionPerformed
 
     private void ubahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubahActionPerformed
-        // TODO add your handling code here:
+        TableModel model = tb_anggota.getModel();     
+        tambah_anggota tambahanggota = new  tambah_anggota();
+        if (tb_anggota.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(null, "Silahkan klik pada satu table...");
+        } else {
+            label_informasi.setText("Klik Refresh untuk memperbaharui data...");
+            label_informasi.setForeground(new java.awt.Color(255,0,51));
+            tambahanggota.setVisible(true);
+            tambahanggota.title.setText("Ubah Anggota");
+            int i = tb_anggota.getSelectedRow();
+            tambahanggota.id.setText(model.getValueAt(i,1).toString());
+            tambahanggota.nomor_induk.setText(model.getValueAt(i,2).toString());
+            tambahanggota.nama.setText(model.getValueAt(i,3).toString());
+            tambahanggota.alamat.setText(model.getValueAt(i,4).toString());
+            tambahanggota.telp.setText(model.getValueAt(i,5).toString());
+            tambahanggota.email.setText(model.getValueAt(i,6).toString());
+            tambahanggota.username.setText(model.getValueAt(i,7).toString());
+            tambahanggota.password.setText(model.getValueAt(i,8).toString());
+            String status = (model.getValueAt(i,9).toString());
+            if (status.equals("Kepala")) {
+                tambahanggota.status.setSelectedIndex(1);
+            } else if (status.equals("Pengurus")) {
+                tambahanggota.status.setSelectedIndex(2);
+            } else if (status.equals("Guru")) {
+                tambahanggota.status.setSelectedIndex(3);
+            } else if (status.equals("Staff")) {
+                tambahanggota.status.setSelectedIndex(4);
+            } else if (status.equals("Siswa/i")) {
+                tambahanggota.status.setSelectedIndex(5);
+            } else {
+                
+            }
+            String hak_akses =(model.getValueAt(i,10).toString());
+            if (hak_akses.equals("1")){
+                tambahanggota.hak_akses.setSelectedIndex(1);
+            } else if (hak_akses.equals("2")) {
+                tambahanggota.hak_akses.setSelectedIndex(2);
+            } else if (hak_akses.equals("3")) {
+                tambahanggota.hak_akses.setSelectedIndex(3);
+            } else {
+                
+            }
+//            tambahanggota.s_status = (model.getValueAt(i,9).toString());
+//            
+//            tambahanggota.s_hakakses = (model.getValueAt(i,10).toString());
+        }
     }//GEN-LAST:event_ubahActionPerformed
+
+    private void ubah1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubah1ActionPerformed
+        get_tbanggota();
+        label_informasi.setText("");
+    }//GEN-LAST:event_ubah1ActionPerformed
+
+    private void hapusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hapusActionPerformed
+        conn=koneksi.ConnectDb();
+        TableModel model = tb_anggota.getModel();     
+        if (tb_anggota.getSelectionModel().isSelectionEmpty()){
+            JOptionPane.showMessageDialog(null, "Silahkan klik pada satu table...");
+        } else {
+            int i = tb_anggota.getSelectedRow();
+            String id_primary =(model.getValueAt(i,1).toString());
+            String nama =(model.getValueAt(i,3).toString());
+            String sql ="DELETE FROM `tb_anggota` WHERE `tb_anggota`.`kode_anggota` = '"+id_primary+"'";
+            try {
+                int opsi = JOptionPane.showConfirmDialog(null, "Benarkah anda ingin menghapus data dengan \nNama  : "+nama);
+                switch(opsi){
+                    case JOptionPane.YES_OPTION:
+                        pst = conn.prepareStatement(sql);
+                        pst.executeUpdate();
+                        get_tbanggota();
+                        JOptionPane.showMessageDialog(null, "Data berhasil dihapus..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
+                        break;
+                    case JOptionPane.NO_OPTION:
+                        JOptionPane.showMessageDialog(null, "Data tidak dihapus");
+                        break;
+                    default:
+                        JOptionPane.showMessageDialog(null, "Data tidak dihapus");
+                        break;
+                };
+
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error ketika fungsi catch delete "+e);
+            }
+        }
+//        "?
+    }//GEN-LAST:event_hapusActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -255,13 +408,15 @@ public class pnl_anggota extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel label_informasi;
     private javax.swing.JLabel lbl_dashboard1;
     private javax.swing.JLabel lbl_dashboard2;
     private javax.swing.JLabel lbl_dashboard3;
     private javax.swing.JLabel lbl_dashboard4;
     private javax.swing.JButton tambah;
+    private javax.swing.JTable tb_anggota;
     private javax.swing.JButton ubah;
+    private javax.swing.JButton ubah1;
     // End of variables declaration//GEN-END:variables
 }

@@ -35,6 +35,9 @@ public class tambah_anggota extends javax.swing.JFrame {
     
     String s_id,s_ni,s_status,s_nama,s_alamat,s_no_telp,s_email,s_username,s_password,s_hakakses,id_primary,combain;
     Integer countid,fixid;
+    String err_status,err_nama,err_telp,err_username,err_password,err_hakakses;
+    Integer inputdb = 0;
+    
     public void get(){
         s_id = id.getText();
         s_ni = nomor_induk.getText();
@@ -46,6 +49,35 @@ public class tambah_anggota extends javax.swing.JFrame {
         s_username = username.getText();
         s_password = password.getText();
         s_hakakses = hak_akses.getSelectedItem().toString();
+//        JOptionPane.showMessageDialog(null, s_hakakses, "Error",JOptionPane.ERROR_MESSAGE);
+
+//        cek field kosong
+//        if (s_status.equals("-- Pilih --")){
+//            err_status = "Status tidak boleh kosong \n";
+//        } else if (s_nama.equals("")) {
+//            err_nama = "Nama tidak boleh kosong \n";
+//        } else if (s_no_telp.equals("")) {
+//            err_telp = "No. Telp tidak boleh kosong \n";
+//        } else if (s_username.equals("")) {
+//            err_username = "Username tidak boleh kosong \n";
+//        } else if (s_password.equals("")) {
+//            err_password = "Password tidak boleh kosong \n";
+//        } else if (s_hakakses.equals("-- Pilih --")) {
+//            err_hakakses = "Hak Akses tidak boleh kosong";
+//        } else {
+//            inputdb = 1;
+//        }
+       
+        
+        if (s_hakakses.equals("Anggota")) {
+            s_hakakses = "3";
+        } else if (s_hakakses.equals("Pengurus")) {
+            s_hakakses = "2";
+        } else if (s_hakakses.equals("Kepala")) {
+            s_hakakses = "1";
+        } else {
+            JOptionPane.showMessageDialog(null, "Error if get Hak Akses", "Error",JOptionPane.ERROR_MESSAGE);
+        }
         
         
 //        JOptionPane.showMessageDialog(null, s_id);
@@ -79,7 +111,11 @@ public class tambah_anggota extends javax.swing.JFrame {
                 } else {
                     combain = "SMKLI-"+fixid;
                 }
+// test buat input aktifkan 1 baris dibawah ini               
                 id.setText(combain);
+// test buat update aktifin 2 baris dibawah ini
+//                id.setText("SMKLI-0002");
+//                id_primary = "SMKLI-0002";
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
@@ -89,22 +125,24 @@ public class tambah_anggota extends javax.swing.JFrame {
     public void add(){
         get();
         conn = koneksi.ConnectDb();
-        String sql = "INSERT INTO `tb_anggota` (`id`, `nomor_induk`, `status`, `nama`, `alamat`, `no_telpn`, `email`, `username`, `password`, `hak_akses`, `tanggal_pendaftaran`) VALUES (?,?,?,?,?,?,?,?,?,?, now())";
+        String sql = "INSERT INTO `tb_anggota` (`id`,`kode_anggota`, `nomor_induk`, `status`, `nama`, `alamat`, `no_telpn`, `email`, `username`, `password`, `hak_akses`, `tanggal_pendaftaran`) VALUES (?,?,?,?,?,?,?,?,?,?,?, now())";
         try {
             pst = conn.prepareStatement(sql);
-            pst.setString(1,  s_id);
-            pst.setString(2,  s_ni);
-            pst.setString(3,  s_status);
-            pst.setString(4,  s_nama);
-            pst.setString(5,  s_alamat);
-            pst.setString(6,  s_no_telp);
-            pst.setString(7,  s_email);
-            pst.setString(8,  s_username);
-            pst.setString(9,  s_password);
-            pst.setString(10, s_hakakses);
+            pst.setString(1,  fixid.toString());
+            pst.setString(2,  s_id);
+            pst.setString(3,  s_ni);
+            pst.setString(4,  s_status);
+            pst.setString(5,  s_nama);
+            pst.setString(6,  s_alamat);
+            pst.setString(7,  s_no_telp);
+            pst.setString(8,  s_email);
+            pst.setString(9,  s_username);
+            pst.setString(10, s_password);
+            pst.setString(11, s_hakakses);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
             clear();
+            getid();
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
@@ -114,22 +152,22 @@ public class tambah_anggota extends javax.swing.JFrame {
     public void update(){
         get();
         conn = koneksi.ConnectDb();
-        String sql = "UPDATE `tb_anggota` SET `nomor_induk` = ?, `status` = ?, `nama` = ?, `alamat` = ?, `no_telpn` = ?, `email` = ?, `username` = ?, `password` = ?, `hak_akses` = ? WHERE `tb_anggota`.`id` = "+id_primary+";";
+        String sql = "UPDATE `tb_anggota` SET `nomor_induk` = ?, `status` = ?, `nama` = ?, `alamat` = ?, `no_telpn` = ?, `email` = ?, `username` = ?, `password` = ?, `hak_akses` = ? WHERE `tb_anggota`.`kode_anggota` = '"+s_id+"';";
         try {
             pst = conn.prepareStatement(sql);
-            pst.setString(1,  s_id);
-            pst.setString(2,  s_ni);
-            pst.setString(3,  s_status);
-            pst.setString(4,  s_nama);
-            pst.setString(5,  s_alamat);
-            pst.setString(6,  s_no_telp);
-            pst.setString(7,  s_email);
-            pst.setString(8,  s_username);
-            pst.setString(9,  s_password);
-            pst.setString(10, s_hakakses);
+            pst.setString(1,  s_ni);
+            pst.setString(2,  s_status);
+            pst.setString(3,  s_nama);
+            pst.setString(4,  s_alamat);
+            pst.setString(5,  s_no_telp);
+            pst.setString(6,  s_email);
+            pst.setString(7,  s_username);
+            pst.setString(8,  s_password);
+            pst.setString(9,  s_hakakses);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil diubah..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
             clear();
+            dispose();
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
@@ -168,7 +206,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         status = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        label = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         id = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton3 = new javax.swing.JButton();
@@ -202,14 +240,15 @@ public class tambah_anggota extends javax.swing.JFrame {
         jLabel4.setText("* Status");
 
         status.setEditable(true);
-        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "Guru", "Staff", "Siswa/i" }));
+        status.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "Kepala", "Pengurus", "Guru", "Staff", "Siswa/i" }));
 
         jPanel2.setBackground(new java.awt.Color(30, 108, 199));
 
-        label.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        label.setForeground(new java.awt.Color(255, 255, 255));
-        label.setText("Tambah Anggota");
+        title.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Tambah Anggota");
 
+        id.setEditable(false);
         id.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
@@ -222,7 +261,7 @@ public class tambah_anggota extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(label)
+                .addComponent(title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -236,7 +275,7 @@ public class tambah_anggota extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
                     .addComponent(id, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(label))
+                    .addComponent(title))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -283,7 +322,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         jLabel11.setText("* Hak Akses");
 
         hak_akses.setEditable(true);
-        hak_akses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "Guru", "Staff", "Siswa/i" }));
+        hak_akses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "Kepala", "Pengurus", "Anggota" }));
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -389,9 +428,9 @@ public class tambah_anggota extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        if (label.getText().equals("TAMBAH ANGGOTA")) {
+        if (title.getText().equals("Tambah Anggota")) {
             add();
-        } else if (label.getText().equals("TAMBAH ANGGOTA")) {
+        } else if (title.getText().equals("Ubah Anggota")) {
             update();
         } else {
             JOptionPane.showMessageDialog(null,"Masalah di if cek label","ERROR",JOptionPane.ERROR_MESSAGE);
@@ -443,10 +482,10 @@ public class tambah_anggota extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField alamat;
-    private javax.swing.JTextField email;
-    private javax.swing.JComboBox<String> hak_akses;
-    private javax.swing.JTextField id;
+    public javax.swing.JTextField alamat;
+    public javax.swing.JTextField email;
+    public javax.swing.JComboBox<String> hak_akses;
+    public javax.swing.JTextField id;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel10;
@@ -461,13 +500,13 @@ public class tambah_anggota extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JLabel label;
-    private javax.swing.JTextField nama;
-    private javax.swing.JTextField nomor_induk;
-    private javax.swing.JTextField password;
-    private javax.swing.JComboBox<String> status;
-    private javax.swing.JTextField telp;
-    private javax.swing.JTextField username;
+    public javax.swing.JTextField nama;
+    public javax.swing.JTextField nomor_induk;
+    public javax.swing.JTextField password;
+    public javax.swing.JComboBox<String> status;
+    public javax.swing.JTextField telp;
+    public javax.swing.JLabel title;
+    public javax.swing.JTextField username;
     // End of variables declaration//GEN-END:variables
 
     private Object getSelectedItem() {

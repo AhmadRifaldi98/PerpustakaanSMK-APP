@@ -52,7 +52,7 @@ public class p_Login extends javax.swing.JFrame {
                     case "2":
                         new loading().setVisible(true);
 //                        loading
-//                        new Dashboard().setVisible(true);
+                        new Dashboard().setVisible(true);
                         dispose();
                         break;
                     case "3":

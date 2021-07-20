@@ -107,7 +107,6 @@ public class Dashboard extends javax.swing.JFrame {
         pnl_menu = new javax.swing.JPanel();
         pnl_menu1 = new javax.swing.JPanel();
         test = new javax.swing.JLabel();
-        time = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Aplikasi Perpustakaan V 1.1.1");
@@ -454,12 +453,6 @@ public class Dashboard extends javax.swing.JFrame {
         test.setText("Dashboard >");
         pnl_menu1.add(test, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 4, 160, 40));
 
-        time.setFont(new java.awt.Font("Dialog", 0, 14)); // NOI18N
-        time.setForeground(new java.awt.Color(255, 255, 255));
-        time.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        time.setText("07:30:00");
-        pnl_menu1.add(time, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 10, 70, 30));
-
         javax.swing.GroupLayout backgroundLayout = new javax.swing.GroupLayout(background);
         background.setLayout(backgroundLayout);
         backgroundLayout.setHorizontalGroup(
@@ -778,6 +771,5 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel pnl_menu1;
     private javax.swing.JPanel side_menu;
     private javax.swing.JLabel test;
-    private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }
