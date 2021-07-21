@@ -5,17 +5,87 @@
  */
 package perpustakaansmk.app;
 
+import java.awt.Color;
+import java.awt.event.KeyEvent;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Ahmad
  */
 public class pnl_bukutamu extends javax.swing.JPanel {
-
+    Connection conn;
+    ResultSet rs;
+    PreparedStatement pst;
+    private DefaultTableModel tabmode;
     /**
      * Creates new form pnl_dashboard
      */
     public pnl_bukutamu() {
         initComponents();
+        get_bukutamu();
+    }
+    String s_search;
+    
+    public void get_bukutamu(){
+        conn=koneksi.ConnectDb();
+        Object[] Baris ={"No","Kode Anggota","Nama","Status", "Kelas","Tanggal"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_bukutamu.setModel(tabmode);
+        String sql = "select * from `tb_pengunjung` order by `tanggal` desc";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("no");
+                String b = hasil.getString("kode_anggota");
+                String c = hasil.getString("nama");
+                String d = hasil.getString("status");
+                String e = hasil.getString("kelas");
+                String f = hasil.getString("tanggal");
+                String[] data ={a,b,c,d,e,f};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+        
+    public void get_search(){
+        conn=koneksi.ConnectDb();
+        s_search = search.getText().toUpperCase();
+        String sql = "SELECT * FROM `tb_anggota` WHERE `kode_anggota` = '"+s_search+"' OR `nomor_induk` = '"+s_search+"'";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("nomor_induk");
+                String b = hasil.getString("kode_anggota");
+                String c = hasil.getString("nama");
+                String d = hasil.getString("status");
+                String e = hasil.getString("kelas");
+//                String f = hasil.getString("tanggal");
+                
+//                JOptionPane.showMessageDialog(null, a);
+//                JOptionPane.showMessageDialog(null, c);
+//                JOptionPane.showMessageDialog(null, d);
+//                JOptionPane.showMessageDialog(null, e);
+                ni.setText(a);
+                nama.setText(c);
+                status.setText(d);
+                kelas.setText(e);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -28,18 +98,18 @@ public class pnl_bukutamu extends javax.swing.JPanel {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        nama = new javax.swing.JTextField();
+        search = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        nama1 = new javax.swing.JTextField();
-        nama2 = new javax.swing.JTextField();
+        ni = new javax.swing.JTextField();
+        nama = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        nama3 = new javax.swing.JTextField();
-        nama4 = new javax.swing.JTextField();
+        status = new javax.swing.JTextField();
+        kelas = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tb_bukutamu = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         nama5 = new javax.swing.JTextField();
         tambah = new javax.swing.JButton();
@@ -51,8 +121,24 @@ public class pnl_bukutamu extends javax.swing.JPanel {
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
-        nama.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
-        nama.setText("Masukkan (Kode Anggota/ NIK/ NIS)");
+        search.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        search.setText("Masukkan (Kode Anggota/ NIK/ NIS)");
+        search.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                searchFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                searchFocusLost(evt);
+            }
+        });
+        search.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                searchKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                searchKeyReleased(evt);
+            }
+        });
 
         jLabel2.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel2.setText("Cari");
@@ -60,11 +146,11 @@ public class pnl_bukutamu extends javax.swing.JPanel {
         jLabel3.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel3.setText("NIS/NIK");
 
-        nama1.setEditable(false);
-        nama1.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        ni.setEditable(false);
+        ni.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
-        nama2.setEditable(false);
-        nama2.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        nama.setEditable(false);
+        nama.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel4.setText("Nama");
@@ -72,27 +158,24 @@ public class pnl_bukutamu extends javax.swing.JPanel {
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Status");
 
-        nama3.setEditable(false);
-        nama3.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        status.setEditable(false);
+        status.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
-        nama4.setEditable(false);
-        nama4.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        kelas.setEditable(false);
+        kelas.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel6.setText("Kelas");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tb_bukutamu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tb_bukutamu);
 
         jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
         jLabel1.setText("Data Kunjungan");
@@ -130,7 +213,7 @@ public class pnl_bukutamu extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel8)
                         .addGap(57, 57, 57)
@@ -140,19 +223,19 @@ public class pnl_bukutamu extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(6, 6, 6)
-                        .addComponent(nama1, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(ni, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(nama2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel5)
                         .addGap(8, 8, 8)
-                        .addComponent(nama3, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
+                        .addComponent(status, javax.swing.GroupLayout.DEFAULT_SIZE, 141, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jLabel6)
                         .addGap(8, 8, 8)
-                        .addComponent(nama4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,19 +244,19 @@ public class pnl_bukutamu extends javax.swing.JPanel {
                 .addGap(11, 11, 11)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel2)
-                    .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(nama1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ni, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
-                    .addComponent(nama2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4)
-                    .addComponent(nama3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5)
-                    .addComponent(nama4, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel6))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -191,6 +274,39 @@ public class pnl_bukutamu extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_nama5ActionPerformed
 
+    private void searchFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFocusGained
+        if (search.getText().trim().equals("Masukkan (Kode Anggota/ NIK/ NIS)")) {
+            search.setText("");
+        }
+        search.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_searchFocusGained
+
+    private void searchFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_searchFocusLost
+        if (search.getText().trim().equals("")) {
+            search.setText("Masukkan (Kode Anggota/ NIK/ NIS)");
+        }
+        search.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_searchFocusLost
+
+    private void searchKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyReleased
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            get_search();
+        }
+//
+//        if (Integer.parseInt(search.getText())>=9){
+//            get_search();
+//        }       
+    }//GEN-LAST:event_searchKeyReleased
+
+    private void searchKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchKeyPressed
+//        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
+//            get_search();
+//        }
+//        if (Integer.parseInt(search.getText())>=9){
+//            get_search();
+//        }       
+    }//GEN-LAST:event_searchKeyPressed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton hapus;
@@ -203,13 +319,13 @@ public class pnl_bukutamu extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField kelas;
     private javax.swing.JTextField nama;
-    private javax.swing.JTextField nama1;
-    private javax.swing.JTextField nama2;
-    private javax.swing.JTextField nama3;
-    private javax.swing.JTextField nama4;
     private javax.swing.JTextField nama5;
+    private javax.swing.JTextField ni;
+    private javax.swing.JTextField search;
+    private javax.swing.JTextField status;
     private javax.swing.JButton tambah;
+    private javax.swing.JTable tb_bukutamu;
     // End of variables declaration//GEN-END:variables
 }
