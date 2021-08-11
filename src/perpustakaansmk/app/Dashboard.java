@@ -57,8 +57,6 @@ public class Dashboard extends javax.swing.JFrame {
             lbl_pengembalian.setForeground(Color.WHITE);
             btn_databuku.setBackground(new Color(30,108,199));
             lbl_databuku.setForeground(Color.WHITE);
-            btn_ebook.setBackground(new Color(30,108,199));
-            lbl_ebook.setForeground(Color.WHITE);
             btn_anggota.setBackground(new Color(30,108,199));
             lbl_anggota.setForeground(Color.WHITE);
             btn_bukutamu.setBackground(new Color(30,108,199));
@@ -89,9 +87,6 @@ public class Dashboard extends javax.swing.JFrame {
         btn_databuku = new javax.swing.JPanel();
         lbl_databuku = new javax.swing.JLabel();
         lbl_dashboard4 = new javax.swing.JLabel();
-        btn_ebook = new javax.swing.JPanel();
-        lbl_ebook = new javax.swing.JLabel();
-        lbl_dashboard5 = new javax.swing.JLabel();
         btn_pengembalian = new javax.swing.JPanel();
         lbl_pengembalian = new javax.swing.JLabel();
         lbl_dashboard3 = new javax.swing.JLabel();
@@ -162,7 +157,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addComponent(lbl_dashboard6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        side_menu.add(btn_anggota, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 240, 40));
+        side_menu.add(btn_anggota, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 240, 40));
 
         btn_dashboard.setBackground(new java.awt.Color(250, 250, 250));
         btn_dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -278,49 +273,6 @@ public class Dashboard extends javax.swing.JFrame {
 
         side_menu.add(btn_databuku, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 240, -1));
 
-        btn_ebook.setBackground(new java.awt.Color(30, 108, 199));
-        btn_ebook.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btn_ebookMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                btn_ebookMouseExited(evt);
-            }
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                btn_ebookMousePressed(evt);
-            }
-            public void mouseReleased(java.awt.event.MouseEvent evt) {
-                btn_ebookMouseReleased(evt);
-            }
-        });
-
-        lbl_ebook.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        lbl_ebook.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_ebook.setText("Data E-Book");
-
-        lbl_dashboard5.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
-        lbl_dashboard5.setForeground(new java.awt.Color(255, 255, 255));
-        lbl_dashboard5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/005-book-1.png"))); // NOI18N
-
-        javax.swing.GroupLayout btn_ebookLayout = new javax.swing.GroupLayout(btn_ebook);
-        btn_ebook.setLayout(btn_ebookLayout);
-        btn_ebookLayout.setHorizontalGroup(
-            btn_ebookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(btn_ebookLayout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(lbl_dashboard5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(33, 33, 33)
-                .addComponent(lbl_ebook, javax.swing.GroupLayout.PREFERRED_SIZE, 157, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33))
-        );
-        btn_ebookLayout.setVerticalGroup(
-            btn_ebookLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_ebook, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(lbl_dashboard5, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
-
-        side_menu.add(btn_ebook, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 240, -1));
-
         btn_pengembalian.setBackground(new java.awt.Color(30, 108, 199));
         btn_pengembalian.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
@@ -405,7 +357,7 @@ public class Dashboard extends javax.swing.JFrame {
             .addComponent(lbl_dashboard7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        side_menu.add(btn_bukutamu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 310, 240, -1));
+        side_menu.add(btn_bukutamu, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 240, -1));
 
         lbl_bukutamu1.setFont(new java.awt.Font("Roboto", 1, 12)); // NOI18N
         lbl_bukutamu1.setForeground(new java.awt.Color(255, 255, 255));
@@ -606,36 +558,6 @@ public class Dashboard extends javax.swing.JFrame {
         btn_databuku.setBackground(new Color(250, 250, 250));
     }//GEN-LAST:event_btn_databukuMouseReleased
 
-    private void btn_ebookMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ebookMouseEntered
-        // TODO add your handling code here:
-        lbl_ebook.setForeground(Color.BLACK);
-        btn_ebook.setBackground(new Color(250, 250, 250));
-    }//GEN-LAST:event_btn_ebookMouseEntered
-
-    private void btn_ebookMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ebookMouseExited
-        if(test.getText().equals("Data E-Book > ")) {
-            lbl_ebook.setForeground(Color.BLACK);
-            btn_ebook.setBackground(new Color(250, 250, 250));
-        } else {
-            lbl_ebook.setForeground(Color.white);
-            btn_ebook.setBackground(new Color(30,108,199));
-        }
-    }//GEN-LAST:event_btn_ebookMouseExited
-
-    private void btn_ebookMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ebookMousePressed
-        // TODO add your handling code here:
-        change_colorbtn();
-        lbl_ebook.setForeground(Color.BLACK);
-        btn_ebook.setBackground(new Color(240, 240, 240));
-        test.setText("Data E-Book > ");
-        new CambiaPanel(pnl_menu, new pnl_ebook());
-    }//GEN-LAST:event_btn_ebookMousePressed
-
-    private void btn_ebookMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_ebookMouseReleased
-        lbl_ebook.setForeground(Color.BLACK);
-        btn_ebook.setBackground(new Color(250, 250, 250));
-     }//GEN-LAST:event_btn_ebookMouseReleased
-
     private void btn_pengembalianMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btn_pengembalianMouseEntered
         // TODO add your handling code here:
         lbl_pengembalian.setForeground(Color.BLACK);
@@ -744,7 +666,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel btn_bukutamu;
     private javax.swing.JPanel btn_dashboard;
     private javax.swing.JPanel btn_databuku;
-    private javax.swing.JPanel btn_ebook;
     private javax.swing.JPanel btn_peminjaman;
     private javax.swing.JPanel btn_pengembalian;
     private javax.swing.JLabel lbl_anggota;
@@ -759,12 +680,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel lbl_dashboard2;
     private javax.swing.JLabel lbl_dashboard3;
     private javax.swing.JLabel lbl_dashboard4;
-    private javax.swing.JLabel lbl_dashboard5;
     private javax.swing.JLabel lbl_dashboard6;
     private javax.swing.JLabel lbl_dashboard7;
     private javax.swing.JLabel lbl_dashboard8;
     private javax.swing.JLabel lbl_databuku;
-    private javax.swing.JLabel lbl_ebook;
     private javax.swing.JLabel lbl_peminjaman;
     private javax.swing.JLabel lbl_pengembalian;
     private javax.swing.JPanel pnl_menu;
