@@ -40,6 +40,7 @@ public class p_Login extends javax.swing.JFrame {
             String sql="SELECT * FROM `tb_anggota` where username='"+username.getText()+"'and password='" +password.getText()+"'";
             stm = conn.createStatement();
             ResultSet HUser = stm.executeQuery(sql);
+            conn = koneksi.ConnectDb();
             if (HUser.next()){
                 String hak = HUser.getString("hak_akses");
                 String nama = HUser.getString("nama");
