@@ -66,7 +66,7 @@ public class pnl_bukutamu extends javax.swing.JPanel {
             ResultSet hasil = stat.executeQuery(sql);
             int i=0;
             while(hasil.next()){
-                String a = hasil.getString("no");
+//                String a = hasil.getString("no");
                 String b = hasil.getString("kode_anggota");
                 String c = hasil.getString("nomor_induk");
                 String d = hasil.getString("nama");
@@ -399,8 +399,10 @@ public class pnl_bukutamu extends javax.swing.JPanel {
         // TODO add your handling code here:
         conn=koneksi.ConnectDb();
         String sql ="INSERT INTO `tb_pengunjung` (`kode_anggota`, `nomor_induk`, `nama`, `kelas`, `status`, `tanggal`) VALUES (?, ?, ?, ?, ?, NOW())";
-        if (s_nik.equals("") || s_status.equals("") || s_nama.equals("") || s_kodeanggota.equals("") || s_kelas.equals("")) {
+        if (search.getText().equals("Masukkan (Kode Anggota/ NIK/ NIS)")||search.getText().equals("") ) { 
             JOptionPane.showMessageDialog(null, "Data yang akan disimpan masih kosong, \nsilahkan masukan data terlebih dahulu...");
+        } else if (s_nik.equals("") || s_status.equals("") || s_nama.equals("") || s_kodeanggota.equals("") || s_kelas.equals("")) {
+            get_search();
             search.requestFocusInWindow();
         } else {
             conn = koneksi.ConnectDb();

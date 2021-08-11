@@ -33,7 +33,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         getid();
     }
     
-    String s_id,s_ni,s_status,s_nama,s_alamat,s_no_telp,s_email,s_username,s_password,s_hakakses,id_primary,combain;
+    String s_id,s_ni,s_status,s_kelas,s_nama,s_alamat,s_no_telp,s_email,s_username,s_password,s_hakakses,id_primary,combain;
     Integer countid,fixid;
     String err_status,err_nama,err_telp,err_username,err_password,err_hakakses;
     Integer inputdb = 0;
@@ -42,6 +42,7 @@ public class tambah_anggota extends javax.swing.JFrame {
         s_id = id.getText();
         s_ni = nomor_induk.getText();
         s_status = status.getSelectedItem().toString();
+        s_kelas = kelas.getSelectedItem().toString();
         s_nama = nama.getText();
         s_alamat = alamat.getText();
         s_no_telp = telp.getText();
@@ -125,20 +126,21 @@ public class tambah_anggota extends javax.swing.JFrame {
     public void add(){
         get();
         conn = koneksi.ConnectDb();
-        String sql = "INSERT INTO `tb_anggota` (`id`,`kode_anggota`, `nomor_induk`, `status`, `nama`, `alamat`, `no_telpn`, `email`, `username`, `password`, `hak_akses`, `tanggal_pendaftaran`) VALUES (?,?,?,?,?,?,?,?,?,?,?, now())";
+        String sql = "INSERT INTO `tb_anggota` (`id`,`kode_anggota`, `nomor_induk`, `status`,`kelas`, `nama`, `alamat`, `no_telpn`, `email`, `username`, `password`, `hak_akses`, `tanggal_pendaftaran`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?, now())";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1,  fixid.toString());
             pst.setString(2,  s_id);
             pst.setString(3,  s_ni);
             pst.setString(4,  s_status);
-            pst.setString(5,  s_nama);
-            pst.setString(6,  s_alamat);
-            pst.setString(7,  s_no_telp);
-            pst.setString(8,  s_email);
-            pst.setString(9,  s_username);
-            pst.setString(10, s_password);
-            pst.setString(11, s_hakakses);
+            pst.setString(5,  s_kelas);
+            pst.setString(6,  s_nama);
+            pst.setString(7,  s_alamat);
+            pst.setString(8,  s_no_telp);
+            pst.setString(9,  s_email);
+            pst.setString(10,  s_username);
+            pst.setString(11, s_password);
+            pst.setString(12, s_hakakses);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
             clear();
@@ -152,18 +154,19 @@ public class tambah_anggota extends javax.swing.JFrame {
     public void update(){
         get();
         conn = koneksi.ConnectDb();
-        String sql = "UPDATE `tb_anggota` SET `nomor_induk` = ?, `status` = ?, `nama` = ?, `alamat` = ?, `no_telpn` = ?, `email` = ?, `username` = ?, `password` = ?, `hak_akses` = ? WHERE `tb_anggota`.`kode_anggota` = '"+s_id+"';";
+        String sql = "UPDATE `tb_anggota` SET `nomor_induk` = ?, `status` = ?, `kelas` =?, `nama` = ?, `alamat` = ?, `no_telpn` = ?, `email` = ?, `username` = ?, `password` = ?, `hak_akses` = ? WHERE `tb_anggota`.`kode_anggota` = '"+s_id+"';";
         try {
             pst = conn.prepareStatement(sql);
             pst.setString(1,  s_ni);
             pst.setString(2,  s_status);
-            pst.setString(3,  s_nama);
-            pst.setString(4,  s_alamat);
-            pst.setString(5,  s_no_telp);
-            pst.setString(6,  s_email);
-            pst.setString(7,  s_username);
-            pst.setString(8,  s_password);
-            pst.setString(9,  s_hakakses);
+            pst.setString(3,  s_kelas);
+            pst.setString(4,  s_nama);
+            pst.setString(5,  s_alamat);
+            pst.setString(6,  s_no_telp);
+            pst.setString(7,  s_email);
+            pst.setString(8,  s_username);
+            pst.setString(9,  s_password);
+            pst.setString(10,  s_hakakses);
             pst.executeUpdate();
             JOptionPane.showMessageDialog(null, "Data berhasil diubah..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
             clear();
@@ -175,21 +178,20 @@ public class tambah_anggota extends javax.swing.JFrame {
     }
     
     public void clear(){
-        id.setText("");
+//        id.setText("");
         nomor_induk.setText("");
-        status.setSelectedIndex(1);
+        status.setSelectedIndex(0);
+        kelas.setSelectedIndex(0);
         nama.setText("");
         alamat.setText("");
         telp.setText("");
         email.setText("");
         username.setText("");
         password.setText("");
-        hak_akses.setSelectedIndex(1);
+        hak_akses.setSelectedIndex(0);
     }
     
-    public void delete(){
-        
-    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -225,6 +227,8 @@ public class tambah_anggota extends javax.swing.JFrame {
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         hak_akses = new javax.swing.JComboBox<>();
+        kelas = new javax.swing.JComboBox<>();
+        jLabel12 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -287,6 +291,11 @@ public class tambah_anggota extends javax.swing.JFrame {
         });
 
         jButton4.setText("Clear");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("NIK/ NIS");
@@ -324,47 +333,66 @@ public class tambah_anggota extends javax.swing.JFrame {
         hak_akses.setEditable(true);
         hak_akses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "Kepala", "Pengurus", "Anggota" }));
 
+        kelas.setEditable(true);
+        kelas.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --", "X TKJ", "XI TKJ", "XII TKJ" }));
+
+        jLabel12.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
+        jLabel12.setText("Kelas");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2)
-                            .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel5)
-                                    .addComponent(nomor_induk, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6)
-                                    .addComponent(alamat, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel7)
-                                    .addComponent(telp, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(57, 57, 57)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel11)
-                                    .addComponent(hak_akses, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel10)
-                                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel9)
-                                    .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel4)
-                                    .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 66, Short.MAX_VALUE))))
             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(250, 250, 250)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(378, 378, 378)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel12)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel10)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel2))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel7))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel6)
+                        .addGap(309, 309, 309)
+                        .addComponent(jLabel9))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jLabel5)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(telp, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(alamat, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nomor_induk, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(nama, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(57, 57, 57)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(status, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(kelas, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(username, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(hak_akses, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel11)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(250, 250, 250)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -376,43 +404,43 @@ public class tambah_anggota extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jLabel4))
                 .addGap(0, 0, 0)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(status)
-                    .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                .addGap(21, 21, 21)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(0, 0, 0)
-                        .addComponent(nomor_induk, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel9)
-                        .addGap(0, 0, 0)
-                        .addComponent(username, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(nama, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(status))
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel6)
-                        .addGap(0, 0, 0)
-                        .addComponent(alamat, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE))
+                        .addGap(21, 21, 21)
+                        .addComponent(jLabel5))
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel10)
-                        .addGap(0, 0, 0)
-                        .addComponent(password, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
-                .addGap(18, 18, 18)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel12)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(nomor_induk, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(kelas))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(0, 0, 0)
-                        .addComponent(telp, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel11)
-                        .addGap(0, 0, 0)
-                        .addComponent(hak_akses)))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel8)
+                    .addComponent(jLabel6)
+                    .addComponent(jLabel9))
                 .addGap(0, 0, 0)
-                .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(alamat, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
+                    .addComponent(username))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jLabel7))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(telp, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel11))
+                .addGap(0, 0, 0)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(hak_akses)
+                    .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE))
                 .addGap(27, 27, 27)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
@@ -438,6 +466,11 @@ public class tambah_anggota extends javax.swing.JFrame {
  
         
     }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -490,6 +523,7 @@ public class tambah_anggota extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -500,6 +534,7 @@ public class tambah_anggota extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    public javax.swing.JComboBox<String> kelas;
     public javax.swing.JTextField nama;
     public javax.swing.JTextField nomor_induk;
     public javax.swing.JTextField password;
