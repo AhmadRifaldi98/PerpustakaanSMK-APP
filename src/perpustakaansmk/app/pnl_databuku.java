@@ -24,49 +24,53 @@ public class pnl_databuku extends javax.swing.JPanel {
      */
     public pnl_databuku() {
         initComponents();
-        tablesiswa();
+        tablebuku();
     }
 
 private DefaultTableModel tabmode;
-    public void tablesiswa(){
-    conn=koneksi.ConnectDb();
-//        id	judul_buku	pengarang	penerbit	tahun_terbit	kode_ISBN_13	kode_ISBN_10	jumlah	harga	lokasi_rak	foto_cover	ringkasan	tanggal
-    Object[] Baris = {"ID","Cover Buku","Judul Buku","Lokasi Rak","Pengarang","Penerbit","Tahun Terbit","ISBN-13","ISBN-10","Jumlah Buku", "Harga Buku",  "Ringkasan","Tanggal"};
-    tabmode = new DefaultTableModel(null, Baris);
-    tb_buku.setModel(tabmode);
-    String sql = "select * from `tb_databuku`";
-        TableColumnModel columnModel = tb_buku.getColumnModel();
-        columnModel.getColumn(0).setPreferredWidth(30);
-        columnModel.getColumn(0).setMaxWidth(170);
-//        columnModel.getColumn(1).setPreferredWidth(150);
-//        columnModel.getColumn(1).setMaxWidth(150);
-//        columnModel.getColumn(2).setPreferredWidth(40);
-//        columnModel.getColumn(2).setMaxWidth(40);  
-    try{
-            java.sql.Statement stat = conn.createStatement();
-            ResultSet hasil = stat.executeQuery(sql);
-            while(hasil.next()){
-                String a = hasil.getString("id");
-                String b = hasil.getString("foto_cover");
-                String c = hasil.getString("judul_buku");
-                String d = hasil.getString("lokasi_rak");
-//                String e = hasil.getString("pengarang");
-//                String f = hasil.getString("penerbit");
-                String g = hasil.getString("tahun_terbit");
-                String h = hasil.getString("kode_ISBN_13");
-                String i = hasil.getString("kode_ISBN_10");
-                String j = hasil.getString("jumlah");
-//                String k = hasil.getString("harga");
-                String l = hasil.getString("ringkasan");
-//                String m = hasil.getString("tanggal");
-                
-                String[] data ={a,b,c,d,g,h,i,j,l};
-                tabmode.addRow(data);
-            }
-        } catch (Exception e) { 
-            
-    }
-    }
+public void tablebuku(){
+    
+}
+
+//    public void tablebuku(){
+//    conn=koneksi.ConnectDb();
+////        id	judul_buku	pengarang	penerbit	tahun_terbit	kode_ISBN_13	kode_ISBN_10	jumlah	harga	lokasi_rak	foto_cover	ringkasan	tanggal
+//    Object[] Baris = {"ID","Cover Buku","Judul Buku","Lokasi Rak","Pengarang","Penerbit","Tahun Terbit","ISBN-13","ISBN-10","Jumlah Buku", "Harga Buku",  "Ringkasan","Tanggal"};
+//    tabmode = new DefaultTableModel(null, Baris);
+//    tb_buku.setModel(tabmode);
+//    String sql = "select * from `tb_buku`";
+//        TableColumnModel columnModel = tb_buku.getColumnModel();
+//        columnModel.getColumn(0).setPreferredWidth(30);
+//        columnModel.getColumn(0).setMaxWidth(170);
+////        columnModel.getColumn(1).setPreferredWidth(150);
+////        columnModel.getColumn(1).setMaxWidth(150);
+////        columnModel.getColumn(2).setPreferredWidth(40);
+////        columnModel.getColumn(2).setMaxWidth(40);  
+//    try{
+//            java.sql.Statement stat = conn.createStatement();
+//            ResultSet hasil = stat.executeQuery(sql);
+//            while(hasil.next()){
+//                String a = hasil.getString("id");
+//                String b = hasil.getString("foto_cover");
+//                String c = hasil.getString("judul_buku");
+//                String d = hasil.getString("lokasi_rak");
+////                String e = hasil.getString("pengarang");
+////                String f = hasil.getString("penerbit");
+//                String g = hasil.getString("tahun_terbit");
+//                String h = hasil.getString("kode_ISBN_13");
+//                String i = hasil.getString("kode_ISBN_10");
+//                String j = hasil.getString("jumlah");
+////                String k = hasil.getString("harga");
+//                String l = hasil.getString("ringkasan");
+////                String m = hasil.getString("tanggal");
+//                
+//                String[] data ={a,b,c,d,g,h,i,j,l};
+//                tabmode.addRow(data);
+//            }
+//        } catch (Exception e) { 
+//            
+//    }
+//    }
     
     /**
      * This method is called from within the constructor to initialize the form.

@@ -31,12 +31,12 @@ public class tambah_buku extends javax.swing.JFrame {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_HORIZ);
         setResizable(false);
-        
+        getregis();
     }
     
     String s_noregis,s_judul,s_pengarang,s_penerbit,s_kotaterbit,s_isbn13,s_isbn10,s_thnterbit,s_harga,s_jumlah,s_ringkasan,s_rak;
-    Integer no_regisakhir,no_awal,no_akhir;
-    String combain;
+    Integer no_regisakhir,no_awal,no_akhir,maxregis,regisawal,k,loop;
+    String combain,nomor,jml_regis;
     
     
     public void get(){
@@ -50,68 +50,146 @@ public class tambah_buku extends javax.swing.JFrame {
         s_thnterbit     = thn_terbit.getText();
         s_harga         = harga_buku.getText();
         s_jumlah        = jumlah_buku.getText();
+        s_rak           = rak_buku.getSelectedItem().toString();
         s_ringkasan     = ringkasan_buku.getText();
+        jml_regis       = jumlah_regist.getText();
     }
     
-    public void getnoregis(){
+    public void getregis(){
         conn = koneksi.ConnectDb();
+        String sql = "SELECT MAX(no_regis) FROM `tb_statusbuku`";
+        try {
+            stm=conn.createStatement();
+            rs=stm.executeQuery(sql);
+            while(rs.next())
+            {
+                maxregis = rs.getInt(1);
+                regisawal = maxregis + 1;
+//              merubah integer to string
+                combain = regisawal + "";          
+                no_regist.setText(combain);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    public void count(){
+        no_awal = 0;
+        no_akhir = 0;
+        s_noregis       = no_regist.getText();
+        s_jumlah        = jumlah_buku.getText();
+        no_awal = Integer.parseInt(s_noregis);
+        no_akhir = Integer.parseInt(s_jumlah);
+//        JOptionPane.showMessageDialog(null, "i = "+i, "Error",JOptionPane.ERROR_MESSAGE);
+        if (no_akhir <= 1) {
+//            JOptionPane.showMessageDialog(null, "j = "+j, "Error",JOptionPane.ERROR_MESSAGE);
+            jumlah_regist.setText(no_awal.toString());
+        } else if (no_akhir > 1) {
+            no_akhir = no_awal + no_akhir - 1;
+            jumlah_regist.setText(no_awal.toString()+" - "+ no_akhir.toString());
+        } 
+
+    }    
+    
+    public void clear(){
+//        s_noregis       = no_regist.getText();
+        getregis();
+        jdl_buku.setText("");
+        pengarang.setSelectedIndex(0);
+        penerbit.setSelectedIndex(0);
+        kota_terbit.setSelectedIndex(0);
+        isbn_13.setText("");
+        isbn_10.setText("");
+        thn_terbit.setText("");
+        harga_buku.setText("");
+        jumlah_buku.setText("");
+        rak_buku.setSelectedIndex(0);
+        ringkasan_buku.setText("");
+        jumlah_regist.setText("");
+    }
+    
+    public void addall(){
+        adddatabuku();
+        addstatusbuku();
+    }
+    
+    public void addstatusbuku(){
         get();
-        String sql = "SELECT MAX(no_regis) FROM `tb_buku`";
-        Integer i_jumlah = Integer.parseInt(s_jumlah);
-        if (s_jumlah.equals("")) {
-            JOptionPane.showMessageDialog(null, "Silahkan isi Jumlah buku yang akan didata","Error",JOptionPane.INFORMATION_MESSAGE);
-        } else {
+//      INSERT INTO `tb_buku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),'Baik');  
+        String sql ="INSERT INTO `tb_statusbuku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES (?,?,?,?,?,?,?,?,?,?,'',NOW(),'Baik')";
+        no_awal = 0;
+        no_akhir = 0;
+        s_noregis       = no_regist.getText();
+        s_jumlah        = jumlah_buku.getText();
+        no_awal = Integer.parseInt(s_noregis);
+        no_akhir = Integer.parseInt(s_jumlah);
+        if (no_akhir <= 1) {
+            no_akhir = no_awal;
+        } else if (no_akhir > 1) {
+            no_akhir = no_awal + no_akhir - 1;
+        } 
+        for (int i = no_awal; i <= no_akhir; i++) {
             try {
-                stm=conn.createStatement();
-                rs=stm.executeQuery(sql);
-                while(rs.next())
-                {
-                    no_regisakhir = rs.getInt(1);
-                    no_awal  = no_regisakhir + 1;
-                    if(i_jumlah<=1) {
-                        combain = no_awal + "" ;
-                    } else {
-                        no_akhir = no_awal + i_jumlah - 1;
-                        combain = no_awal + " - " + no_akhir;
-                    }
-                    jumlah_regist.setText(combain);
-                JOptionPane.showMessageDialog(null, no_regisakhir,"Error",JOptionPane.ERROR_MESSAGE);
+//                JOptionPane.showMessageDialog(null, i, "Error",JOptionPane.ERROR_MESSAGE);
+                conn = koneksi.ConnectDb();
+                pst = conn.prepareStatement(sql);
+                if (i < 10) {
+                    nomor = "0000"+i;
+                } else if (i < 100){
+                    nomor = "000"+i;
+                } else if (i < 1000){
+                    nomor = "00"+i;
+                } else if (i < 10000){
+                    nomor = "0"+i;
                 }
+                pst.setString(1,  nomor + "");
+                pst.setString(2,  s_isbn13);
+                pst.setString(3,  s_isbn10);
+                pst.setString(4,  s_judul);
+                pst.setString(5,  s_pengarang);
+                pst.setString(6,  s_penerbit);
+                pst.setString(7,  s_thnterbit);
+                pst.setString(8,  s_harga);
+                pst.setString(9, s_rak);
+                pst.setString(10, s_ringkasan);
+                pst.executeUpdate();
+//                JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
+                no_regist.setText(i+"");
+                
+
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
             }
         }
+        JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
+        clear();
     }
     
-    public void clear(){
-        
-    }
-    
-    public void add(){
-        conn = koneksi.ConnectDb();
+    public void adddatabuku(){
         get();
-        String sql ="";
-        try {
-            pst = conn.prepareStatement(sql);
-//            pst.setString(1,  .toString());
-//            pst.setString(2,  );
-//            pst.setString(3,  );
-//            pst.setString(4,  );
-//            pst.setString(5,  );
-//            pst.setString(6,  );
-//            pst.setString(7,  );
-//            pst.setString(8,  );
-//            pst.setString(9,  );
-//            pst.setString(10, );
-//            pst.setString(11, );
-//            pst.setString(12, );
-            pst.executeUpdate();
-            JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
-            clear();
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
-        }
+        String sql ="INSERT INTO `tb_databuku` (`no_regis`,`isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`,`jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())";
+            try {
+                conn = koneksi.ConnectDb();
+                pst = conn.prepareStatement(sql);
+                pst.setString(1,  jml_regis);
+                pst.setString(2,  s_isbn13);
+                pst.setString(3,  s_isbn10);
+                pst.setString(4,  s_judul);
+                pst.setString(5,  s_pengarang);
+                pst.setString(6,  s_penerbit);
+                pst.setString(7,  s_thnterbit);
+                pst.setString(8,  s_harga);
+                pst.setString(9,  s_jumlah);
+                pst.setString(10, s_rak);
+                pst.setString(11, s_ringkasan);
+                pst.setString(12, "");
+                pst.executeUpdate();
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e, "Error",JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+        JOptionPane.showMessageDialog(null, "Data berhasil ditambahkan..", "Berhasil",JOptionPane.INFORMATION_MESSAGE);
     }
     
     public void update(){
@@ -179,6 +257,7 @@ public class tambah_buku extends javax.swing.JFrame {
         jLabel4.setText("Pengarang");
 
         pengarang.setEditable(true);
+        pengarang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --" }));
 
         jPanel2.setBackground(new java.awt.Color(30, 108, 199));
 
@@ -187,6 +266,7 @@ public class tambah_buku extends javax.swing.JFrame {
         jLabel1.setText("Tambah Buku");
 
         no_regist.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
+        no_regist.setEnabled(false);
 
         jLabel3.setFont(new java.awt.Font("Roboto", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -220,6 +300,7 @@ public class tambah_buku extends javax.swing.JFrame {
         jLabel5.setText("Penerbit");
 
         kota_terbit.setEditable(true);
+        kota_terbit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --" }));
 
         jLabel6.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel6.setText("Tahun Terbit");
@@ -255,6 +336,7 @@ public class tambah_buku extends javax.swing.JFrame {
         jLabel10.setText("Lokasi Rak");
 
         rak_buku.setEditable(true);
+        rak_buku.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --" }));
 
         ringkasan_buku.setColumns(20);
         ringkasan_buku.setRows(5);
@@ -294,11 +376,17 @@ public class tambah_buku extends javax.swing.JFrame {
         });
 
         jButton4.setText("Clear");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
+            }
+        });
 
         jLabel14.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel14.setText("Kota Terbit");
 
         penerbit.setEditable(true);
+        penerbit.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "-- Pilih --" }));
 
         jLabel15.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel15.setText("No Regist");
@@ -459,13 +547,22 @@ public class tambah_buku extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
+        addall();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jumlah_bukuKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jumlah_bukuKeyReleased
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            getnoregis();
+        s_jumlah        = jumlah_buku.getText();
+        if (s_jumlah.equals("")||s_jumlah.equals(null)) {            
+            jumlah_regist.setText("");
+        } else {
+            count();
         }
     }//GEN-LAST:event_jumlah_bukuKeyReleased
+
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        // TODO add your handling code here:
+        clear();
+    }//GEN-LAST:event_jButton4ActionPerformed
 
     /**
      * @param args the command line arguments
