@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Aug 12, 2021 at 06:58 AM
+-- Generation Time: Aug 12, 2021 at 10:34 PM
 -- Server version: 5.7.24-log
 -- PHP Version: 7.2.10
 
@@ -56,11 +56,11 @@ INSERT INTO `tb_anggota` (`id`, `kode_anggota`, `nomor_induk`, `status`, `kelas`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `tb_buku`
+-- Table structure for table `tb_databuku`
 --
 
-CREATE TABLE `tb_buku` (
-  `no_regis` varchar(5) NOT NULL,
+CREATE TABLE `tb_databuku` (
+  `no_regis` varchar(30) NOT NULL,
   `isbn_13` varchar(13) NOT NULL,
   `isbn_10` varchar(10) DEFAULT NULL,
   `judul` varchar(255) NOT NULL,
@@ -72,16 +72,27 @@ CREATE TABLE `tb_buku` (
   `lokasi_rak` varchar(255) NOT NULL,
   `ringkasan` longtext NOT NULL,
   `foto` varchar(10000) DEFAULT NULL,
-  `tanggal` datetime NOT NULL,
-  `kondisi` varchar(40) DEFAULT NULL
+  `tanggal` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `tb_buku`
+-- Dumping data for table `tb_databuku`
 --
 
-INSERT INTO `tb_buku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES
-('1', '9786025992230', '9786025992', 'This is Me', 'Muhajjah Saratini', 'C-Klik Media', 2019, 55000, 1, 'Novel', 'Pokoknya begitu dah', NULL, '2021-08-11 15:23:00', 'Baik');
+INSERT INTO `tb_databuku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`) VALUES
+('1 - 10', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 10, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:04');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_kelas`
+--
+
+CREATE TABLE `tb_kelas` (
+  `no` int(11) NOT NULL,
+  `kode_kelas` varchar(10) NOT NULL,
+  `nama_kelas` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -108,6 +119,44 @@ INSERT INTO `tb_pengunjung` (`kode_anggota`, `nomor_induk`, `nama`, `status`, `k
 ('SMKLI-0003', '131401002', 'Ahmad Rifaldi', 'Siswa/i', 'X TKJ', '2021-08-11 00:00:00'),
 ('SMKLI-0003', '131401002', 'Ahmad Rifaldi', 'Siswa/i', 'X TKJ', '2021-08-11 14:18:33');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tb_statusbuku`
+--
+
+CREATE TABLE `tb_statusbuku` (
+  `no_regis` varchar(5) NOT NULL,
+  `isbn_13` varchar(13) NOT NULL,
+  `isbn_10` varchar(10) DEFAULT NULL,
+  `judul` varchar(255) NOT NULL,
+  `pengarang` varchar(255) NOT NULL,
+  `penerbit` varchar(255) NOT NULL,
+  `thn_terbit` int(11) NOT NULL,
+  `harga` int(11) NOT NULL,
+  `lokasi_rak` varchar(255) NOT NULL,
+  `ringkasan` longtext NOT NULL,
+  `foto` varchar(10000) DEFAULT NULL,
+  `tanggal` datetime NOT NULL,
+  `kondisi` varchar(40) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tb_statusbuku`
+--
+
+INSERT INTO `tb_statusbuku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES
+('00001', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:05', 'Baik'),
+('00002', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:05', 'Baik'),
+('00003', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:05', 'Baik'),
+('00004', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:05', 'Baik'),
+('00005', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik'),
+('00006', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik'),
+('00007', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik'),
+('00008', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik'),
+('00009', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik'),
+('00010', '1234567890123', '1234567890', 'Judul', 'Pengarang', 'Penerbit', 2015, 55000, 'Rak', 'Ringkasan', '', '2021-08-12 22:20:06', 'Baik');
+
 --
 -- Indexes for dumped tables
 --
@@ -119,9 +168,21 @@ ALTER TABLE `tb_anggota`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `tb_buku`
+-- Indexes for table `tb_databuku`
 --
-ALTER TABLE `tb_buku`
+ALTER TABLE `tb_databuku`
+  ADD PRIMARY KEY (`isbn_13`);
+
+--
+-- Indexes for table `tb_kelas`
+--
+ALTER TABLE `tb_kelas`
+  ADD PRIMARY KEY (`kode_kelas`);
+
+--
+-- Indexes for table `tb_statusbuku`
+--
+ALTER TABLE `tb_statusbuku`
   ADD PRIMARY KEY (`no_regis`);
 COMMIT;
 
