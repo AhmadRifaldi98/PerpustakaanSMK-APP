@@ -23,7 +23,7 @@ public class koneksi {
 //            String pass="Koperasiletris123";
             String url ="jdbc:mysql://localhost:3306/perpustakaan";
             String user="root";
-            String pass="root";
+            String pass="";
             Class.forName("com.mysql.jdbc.Driver");
             Connection conn =DriverManager.getConnection(url,user,pass);
             return conn;

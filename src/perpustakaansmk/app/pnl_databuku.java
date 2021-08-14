@@ -8,6 +8,7 @@ package perpustakaansmk.app;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
@@ -25,11 +26,100 @@ public class pnl_databuku extends javax.swing.JPanel {
     public pnl_databuku() {
         initComponents();
         tablebuku();
+        tablestatusbuku();
+        tablepenerbit();
     }
 
 private DefaultTableModel tabmode;
+
+
+
 public void tablebuku(){
-    
+    Object[] Baris = {"No. Regist","Judul Buku","Lokasi Rak","Pengarang","Penerbit","Tahun Terbit","ISBN-13","ISBN-10","Jumlah Buku", "Harga Buku", "Ringkasan","Tanggal"};
+//                                      a,l,d,j,e,f,g,b,c,i,h,k,m
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_buku.setModel(tabmode);
+        String sql = "SELECT * FROM `tb_databuku`";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("no_regis");
+                String b = hasil.getString("isbn_13");
+                String c = hasil.getString("isbn_10");
+                String d = hasil.getString("judul");
+                String e = hasil.getString("pengarang");
+                String f = hasil.getString("penerbit");
+                String g = hasil.getString("thn_terbit");
+                String h = hasil.getString("harga");
+                String i = hasil.getString("jumlah");
+                String j = hasil.getString("lokasi_rak");
+                String k = hasil.getString("ringkasan");
+                String l = hasil.getString("foto");
+                String m = hasil.getString("tanggal");
+                String[] data ={a,d,j,e,f,g,b,c,i,h,k,m};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
+}
+
+public void tablestatusbuku(){
+    Object[] Baris = {"No. Regist","Judul Buku","Lokasi Rak","Pengarang","Penerbit","Tahun Terbit","ISBN-13","ISBN-10", "Harga Buku","Tanggal","Kondisi"};
+//                                      a,l,d,j,e,f,g,b,c,i,h,k,m
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_statusbuku.setModel(tabmode);
+        String sql = "SELECT * FROM `tb_statusbuku`";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("no_regis");
+                String b = hasil.getString("isbn_13");
+                String c = hasil.getString("isbn_10");
+                String d = hasil.getString("judul");
+                String e = hasil.getString("pengarang");
+                String f = hasil.getString("penerbit");
+                String g = hasil.getString("thn_terbit");
+                String h = hasil.getString("harga");
+                String j = hasil.getString("lokasi_rak");
+                String k = hasil.getString("ringkasan");
+                String l = hasil.getString("foto");
+                String m = hasil.getString("tanggal");
+                String n = hasil.getString("kondisi");
+                String[] data ={a,d,j,e,f,g,b,c,h,m,n};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
+}
+
+public void tablepenerbit(){
+    Object[] Baris = {"ID","Kode Penerbit", "Nama Penerbit"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_penerbit.setModel(tabmode);
+        String sql = "SELECT * FROM `tb_penerbit`";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            while(hasil.next()){
+                String a = hasil.getString("id");
+                String b = hasil.getString("kode");
+                String c = hasil.getString("penerbit");
+                String[] data ={a,b,c};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
 }
 
 //    public void tablebuku(){
@@ -83,13 +173,22 @@ public void tablebuku(){
 
         Background = new javax.swing.JPanel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        tambah_buku = new javax.swing.JPanel();
+        daftar_buku = new javax.swing.JPanel();
         tambah = new javax.swing.JButton();
         ubah = new javax.swing.JButton();
         hapus = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tb_buku = new javax.swing.JTable();
-        jPanel2 = new javax.swing.JPanel();
+        status_buku = new javax.swing.JPanel();
+        tambah1 = new javax.swing.JButton();
+        ubah1 = new javax.swing.JButton();
+        hapus1 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tb_statusbuku = new javax.swing.JTable();
+        jPanel5 = new javax.swing.JPanel();
+        status_buku1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tb_penerbit = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -102,7 +201,7 @@ public void tablebuku(){
 
         Background.setBackground(new java.awt.Color(255, 255, 255));
 
-        tambah_buku.setBackground(new java.awt.Color(255, 255, 255));
+        daftar_buku.setBackground(new java.awt.Color(255, 255, 255));
 
         tambah.setBackground(new java.awt.Color(42, 157, 143));
         tambah.setForeground(new java.awt.Color(255, 255, 255));
@@ -136,11 +235,11 @@ public void tablebuku(){
         ));
         jScrollPane1.setViewportView(tb_buku);
 
-        javax.swing.GroupLayout tambah_bukuLayout = new javax.swing.GroupLayout(tambah_buku);
-        tambah_buku.setLayout(tambah_bukuLayout);
-        tambah_bukuLayout.setHorizontalGroup(
-            tambah_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tambah_bukuLayout.createSequentialGroup()
+        javax.swing.GroupLayout daftar_bukuLayout = new javax.swing.GroupLayout(daftar_buku);
+        daftar_buku.setLayout(daftar_bukuLayout);
+        daftar_bukuLayout.setHorizontalGroup(
+            daftar_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(daftar_bukuLayout.createSequentialGroup()
                 .addGap(10, 10, 10)
                 .addComponent(tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -148,16 +247,16 @@ public void tablebuku(){
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(637, 637, 637))
-            .addGroup(tambah_bukuLayout.createSequentialGroup()
+            .addGroup(daftar_bukuLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        tambah_bukuLayout.setVerticalGroup(
-            tambah_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tambah_bukuLayout.createSequentialGroup()
+        daftar_bukuLayout.setVerticalGroup(
+            daftar_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(daftar_bukuLayout.createSequentialGroup()
                 .addGap(11, 11, 11)
-                .addGroup(tambah_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(daftar_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(tambah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(ubah, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(hapus, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -166,20 +265,125 @@ public void tablebuku(){
                 .addContainerGap(73, Short.MAX_VALUE))
         );
 
-        jTabbedPane1.addTab("Daftar Buku", tambah_buku);
+        jTabbedPane1.addTab("Daftar Buku", daftar_buku);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        status_buku.setBackground(new java.awt.Color(255, 255, 255));
+
+        tambah1.setBackground(new java.awt.Color(42, 157, 143));
+        tambah1.setForeground(new java.awt.Color(255, 255, 255));
+        tambah1.setText("Tambah");
+        tambah1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambah1ActionPerformed(evt);
+            }
+        });
+
+        ubah1.setBackground(new java.awt.Color(252, 163, 17));
+        ubah1.setForeground(new java.awt.Color(255, 255, 255));
+        ubah1.setText("Ubah");
+        ubah1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ubah1ActionPerformed(evt);
+            }
+        });
+
+        hapus1.setBackground(new java.awt.Color(230, 57, 70));
+        hapus1.setForeground(new java.awt.Color(255, 255, 255));
+        hapus1.setText("Hapus");
+
+        tb_statusbuku.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane2.setViewportView(tb_statusbuku);
+
+        javax.swing.GroupLayout status_bukuLayout = new javax.swing.GroupLayout(status_buku);
+        status_buku.setLayout(status_bukuLayout);
+        status_bukuLayout.setHorizontalGroup(
+            status_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(status_bukuLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(tambah1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(ubah1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(hapus1, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(637, 637, 637))
+            .addGroup(status_bukuLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        status_bukuLayout.setVerticalGroup(
+            status_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(status_bukuLayout.createSequentialGroup()
+                .addGap(11, 11, 11)
+                .addGroup(status_bukuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(tambah1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(ubah1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hapus1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Status Buku", status_buku);
+
+        status_buku1.setBackground(new java.awt.Color(255, 255, 255));
+
+        tb_penerbit.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        jScrollPane3.setViewportView(tb_penerbit);
+
+        javax.swing.GroupLayout status_buku1Layout = new javax.swing.GroupLayout(status_buku1);
+        status_buku1.setLayout(status_buku1Layout);
+        status_buku1Layout.setHorizontalGroup(
+            status_buku1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(status_buku1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 886, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+        status_buku1Layout.setVerticalGroup(
+            status_buku1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(status_buku1Layout.createSequentialGroup()
+                .addGap(40, 40, 40)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 479, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(73, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 917, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(status_buku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 592, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel5Layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(status_buku1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        jTabbedPane1.addTab("Penerbit", jPanel2);
+        jTabbedPane1.addTab("Penerbit", jPanel5);
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -244,19 +448,36 @@ public void tablebuku(){
 //        tambah_buku tambahbuku = new tambah_buku();
     }//GEN-LAST:event_tambahActionPerformed
 
+    private void tambah1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambah1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tambah1ActionPerformed
+
+    private void ubah1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ubah1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_ubah1ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel Background;
+    private javax.swing.JPanel daftar_buku;
     private javax.swing.JButton hapus;
+    private javax.swing.JButton hapus1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JPanel status_buku;
+    private javax.swing.JPanel status_buku1;
     private javax.swing.JButton tambah;
-    private javax.swing.JPanel tambah_buku;
+    private javax.swing.JButton tambah1;
     public javax.swing.JTable tb_buku;
+    public javax.swing.JTable tb_penerbit;
+    public javax.swing.JTable tb_statusbuku;
     private javax.swing.JButton ubah;
+    private javax.swing.JButton ubah1;
     // End of variables declaration//GEN-END:variables
 }

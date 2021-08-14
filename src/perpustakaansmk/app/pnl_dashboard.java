@@ -5,18 +5,59 @@
  */
 package perpustakaansmk.app;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Ahmad
  */
 public class pnl_dashboard extends javax.swing.JPanel {
-
+    Connection conn;
+    ResultSet rs;
+    PreparedStatement pst;
+    private DefaultTableModel tabmode;
     /**
      * Creates new form pnl_dashboard
      */
     public pnl_dashboard() {
         initComponents();
         transaksi_buku.setFocusable(true);
+        get_bukutamu();
+    }
+    
+    public void get_bukutamu(){
+        conn=koneksi.ConnectDb();
+        Object[] Baris ={"No","Nama","Kelas","Tanggal"};
+        tabmode = new DefaultTableModel(null, Baris);
+        tb_bukutamu.setModel(tabmode);
+        String sql = "select * from `tb_pengunjung` order by `tanggal` desc limit 50";
+        String s_i="";
+        try{
+            conn=koneksi.ConnectDb();
+            java.sql.Statement stat = conn.createStatement();
+            ResultSet hasil = stat.executeQuery(sql);
+            int i=0;
+            while(hasil.next()){
+//                String a = hasil.getString("no");
+                String b = hasil.getString("kode_anggota");
+                String c = hasil.getString("nomor_induk");
+                String d = hasil.getString("nama");
+                String e = hasil.getString("status");
+                String f = hasil.getString("kelas");
+                String g = hasil.getString("tanggal");
+                i = i +1;
+                s_i =String.valueOf(i);
+                String[] data ={s_i,d,f,g};
+                tabmode.addRow(data);
+                Thread.sleep(50);
+            }
+        } catch (Exception e) { 
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
 
     /**
@@ -47,7 +88,7 @@ public class pnl_dashboard extends javax.swing.JPanel {
         jLabel11 = new javax.swing.JLabel();
         jPanel5 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tbl_tamu = new javax.swing.JTable();
+        tb_bukutamu = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -139,7 +180,7 @@ public class pnl_dashboard extends javax.swing.JPanel {
         jLabel11.setText("100");
         jPanel13.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, -1));
 
-        tbl_tamu.setModel(new javax.swing.table.DefaultTableModel(
+        tb_bukutamu.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -147,7 +188,7 @@ public class pnl_dashboard extends javax.swing.JPanel {
 
             }
         ));
-        jScrollPane1.setViewportView(tbl_tamu);
+        jScrollPane1.setViewportView(tb_bukutamu);
 
         jLabel5.setFont(new java.awt.Font("Roboto", 0, 14)); // NOI18N
         jLabel5.setText("Buku Tamu");
@@ -287,7 +328,7 @@ public class pnl_dashboard extends javax.swing.JPanel {
     private javax.swing.JLabel lbl_dashboard2;
     private javax.swing.JLabel lbl_dashboard3;
     private javax.swing.JLabel lbl_dashboard4;
-    private javax.swing.JTable tbl_tamu;
+    private javax.swing.JTable tb_bukutamu;
     private javax.swing.JTable tbl_tamu2;
     private javax.swing.JTextField transaksi_buku;
     // End of variables declaration//GEN-END:variables

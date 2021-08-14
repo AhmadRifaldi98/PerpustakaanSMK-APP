@@ -35,7 +35,7 @@ public class tambah_buku extends javax.swing.JFrame {
     }
     
     String s_noregis,s_judul,s_pengarang,s_penerbit,s_kotaterbit,s_isbn13,s_isbn10,s_thnterbit,s_harga,s_jumlah,s_ringkasan,s_rak;
-    Integer no_regisakhir,no_awal,no_akhir,maxregis,regisawal,k,loop;
+    Integer no_regisakhir,no_awal,no_akhir,maxregis,regisawal,k,loop,error;
     String combain,nomor,jml_regis;
     
     
@@ -53,6 +53,31 @@ public class tambah_buku extends javax.swing.JFrame {
         s_rak           = rak_buku.getSelectedItem().toString();
         s_ringkasan     = ringkasan_buku.getText();
         jml_regis       = jumlah_regist.getText();
+    }
+    
+    public void cek_field(){
+        get();
+        error = 0;
+        if (s_judul.equals("")||s_judul.equals(null)) {
+            error = error + 1;
+        } if (s_pengarang.equals("-- Pilih --")||s_pengarang.equals(null)) {
+            error = error + 1;
+        } if (s_penerbit.equals("-- Pilih --")||s_penerbit.equals(null)) {
+            error = error + 1;
+        } if (s_kotaterbit.equals("-- Pilih --")||s_kotaterbit.equals(null)) {
+            error = error + 1;
+        } if (s_isbn13.equals("")||s_isbn13.equals(null)) {
+            error = error + 1;
+        } if (s_thnterbit.equals("")||s_thnterbit.equals(null)) {
+            error = error + 1;
+        } if (s_harga.equals("")||s_harga.equals(null)) {
+            error = error + 1;
+        } if (s_jumlah.equals("")||s_jumlah.equals(null)||s_jumlah.equals("0")) {
+            error = error + 1;
+        } if (s_rak.equals("-- Pilih --")||s_rak.equals(null)) {
+            error = error + 1;
+        }
+        return;
     }
     
     public void getregis(){
@@ -110,12 +135,19 @@ public class tambah_buku extends javax.swing.JFrame {
     }
     
     public void addall(){
-        adddatabuku();
-        addstatusbuku();
+        cek_field();
+        if (error>0) {
+            JOptionPane.showMessageDialog(null, "Pastikan Field sudah diisi", "Error",JOptionPane.ERROR_MESSAGE);
+        } else if(title.getText().equals("Tambah Buku")) {
+            adddatabuku();
+            addstatusbuku();
+        } else if(title.getText().equals("Ubah Buku")) {
+            
+        }
     }
     
     public void addstatusbuku(){
-        get();
+//    U   cek_field();
 //      INSERT INTO `tb_buku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW(),'Baik');  
         String sql ="INSERT INTO `tb_statusbuku` (`no_regis`, `isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`, `kondisi`) VALUES (?,?,?,?,?,?,?,?,?,?,'',NOW(),'Baik')";
         no_awal = 0;
@@ -167,7 +199,7 @@ public class tambah_buku extends javax.swing.JFrame {
     }
     
     public void adddatabuku(){
-        get();
+//        cek_field();
         String sql ="INSERT INTO `tb_databuku` (`no_regis`,`isbn_13`, `isbn_10`, `judul`, `pengarang`, `penerbit`, `thn_terbit`, `harga`,`jumlah`, `lokasi_rak`, `ringkasan`, `foto`, `tanggal`) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,NOW())";
             try {
                 conn = koneksi.ConnectDb();
@@ -194,7 +226,7 @@ public class tambah_buku extends javax.swing.JFrame {
     
     public void update(){
                 conn = koneksi.ConnectDb();
-        get();
+        cek_field();
     }
     
     /**
@@ -212,7 +244,7 @@ public class tambah_buku extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         pengarang = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        title = new javax.swing.JLabel();
         no_regist = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -261,9 +293,9 @@ public class tambah_buku extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(30, 108, 199));
 
-        jLabel1.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Tambah Buku");
+        title.setFont(new java.awt.Font("Roboto", 1, 18)); // NOI18N
+        title.setForeground(new java.awt.Color(255, 255, 255));
+        title.setText("Tambah Buku");
 
         no_regist.setFont(new java.awt.Font("Roboto", 0, 12)); // NOI18N
         no_regist.setEnabled(false);
@@ -278,7 +310,7 @@ public class tambah_buku extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(19, 19, 19)
-                .addComponent(jLabel1)
+                .addComponent(title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 439, Short.MAX_VALUE)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -292,7 +324,7 @@ public class tambah_buku extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel3)
                     .addComponent(no_regist, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addComponent(title))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -615,7 +647,6 @@ public class tambah_buku extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -643,5 +674,6 @@ public class tambah_buku extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> rak_buku;
     private javax.swing.JTextArea ringkasan_buku;
     private javax.swing.JTextField thn_terbit;
+    private javax.swing.JLabel title;
     // End of variables declaration//GEN-END:variables
 }
